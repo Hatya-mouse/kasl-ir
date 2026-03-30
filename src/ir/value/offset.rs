@@ -14,11 +14,19 @@
 //  limitations under the License.
 //
 
+/// An offset used in memory access instructions.
 pub enum Offset {
     /// Physical byte count.
     Immediate(u32),
     /// Pointer size, mutiplied by the given factor.
     PointerScaled(u32),
+}
+
+impl Offset {
+    /// Returns a new offset with the immediate value of zero.
+    pub fn zero() -> Self {
+        Offset::Immediate(0)
+    }
 }
 
 /// A trait to resolve an `Offset` to an actual byte offset, given the pointer size of the target architecture.
