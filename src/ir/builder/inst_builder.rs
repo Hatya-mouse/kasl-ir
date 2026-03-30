@@ -47,6 +47,9 @@ pub trait InstBuilder {
     /// Assigns the value to the variable.
     fn assign(&mut self, var: Variable, src: Value);
 
+    /// Loads the value in the variable.
+    fn load_var(&mut self, var: Variable) -> Value;
+
     /// Jumps to the target block with the given arguments.
     fn jump(&mut self, block: Block, args: &[Value]);
 
@@ -186,6 +189,13 @@ impl InstBuilder for IRBuilder {
         );
 
         self.push_inst(Inst::Assign { var, src });
+    }
+
+    fn load_var(&mut self, var: Variable) -> Value {
+        let var_ty = self.get_var_type(var);
+        let dst = self.create_val(var_ty);
+        self.push_inst(Inst::LoadVar { var, dst });
+        dst
     }
 
     fn jump(&mut self, block: Block, args: &[Value]) {

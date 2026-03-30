@@ -60,6 +60,9 @@ pub enum Inst {
     /// Assigns the value to the variable.
     Assign { var: Variable, src: Value },
 
+    /// Loads the value in the variable to the destination register.
+    LoadVar { var: Variable, dst: Value },
+
     /// Jumps to the target block with the given arguments.
     Jump { block: Block, args: Vec<Value> },
 
