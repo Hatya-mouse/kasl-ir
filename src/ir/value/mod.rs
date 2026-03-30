@@ -20,4 +20,5 @@ mod variable;
 pub use constant::Const;
 pub use variable::Variable;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Value(pub(crate) u32);

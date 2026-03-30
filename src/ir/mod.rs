@@ -14,13 +14,19 @@
 //  limitations under the License.
 //
 
+//! Intermediate representation (IR) for the KASL compiler.
+
 mod block;
 mod builder;
+mod function;
 mod inst;
 mod types;
 mod value;
 
+pub(crate) use block::BlockData;
+
 pub use block::Block;
-pub use builder::IRBuilder;
+pub use builder::{IRBuilder, InstBuilder};
+pub use inst::{FloatBinOp, FloatUnaryOp, Inst, IntBinOp, IntUnaryOp};
 pub use types::IRType;
-pub use value::{Const, Value};
+pub use value::{Const, Value, Variable};

@@ -14,6 +14,7 @@
 //  limitations under the License.
 //
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Const {
     /// A constant 8-bit integer value.
     I8(i8),

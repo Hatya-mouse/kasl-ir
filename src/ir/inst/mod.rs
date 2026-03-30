@@ -15,12 +15,14 @@
 //
 
 mod bin_op;
+mod cmp;
 mod unary_op;
 
 pub use bin_op::{FloatBinOp, IntBinOp};
+pub use cmp::{FloatCmp, IntCmp};
 pub use unary_op::{FloatUnaryOp, IntUnaryOp};
 
-use crate::ir::{Block, Const, IRType, Value, value::Variable};
+use crate::ir::{Block, Const, IRType, Value, Variable};
 
 /// Defines the instructions in the IR.
 pub enum Inst {
@@ -34,24 +36,24 @@ pub enum Inst {
     /// Loads a value from the source pointer and stores the loaded value in the destination pointer.
     Load {
         ty: IRType,
-        ptr: Value,
-        offset: u32,
+        src_ptr: Value,
+        src_offset: u32,
         dst: Value,
     },
 
-    /// Stores a src value to the destination pointer.
+    /// Stores a value to the destination pointer.
     Store {
         ty: IRType,
-        ptr: Value,
-        offset: u32,
         src: Value,
+        dst_ptr: Value,
+        dst_offset: u32,
     },
 
     /// Copies the value stored in the source pointer to the destination pointer.
     Memcpy {
         size: Value,
-        dest_ptr: Value,
-        dest_offset: u32,
+        dst_ptr: Value,
+        dst_offset: u32,
         src_ptr: Value,
         src_offset: u32,
     },
@@ -59,13 +61,13 @@ pub enum Inst {
     /// Assigns a constant value to the value register.
     Const { value: Const, dst: Value },
 
-    /// Assigns the value of the source register to the destination register.
+    /// Assigns the value to the variable.
     Assign { var: Variable, src: Value },
 
     /// Jumps to the target block with the given arguments.
     Jump { block: Block, args: Vec<Value> },
 
-    /// Contidionally jumps to the then block if the condition is true, otherwise jumps to the else block.
+    /// Contidionally jumps to the then block if the condition is not zero, otherwise jumps to the else block.
     Brif {
         cond: Value,
         then_block: Block,
@@ -75,43 +77,59 @@ pub enum Inst {
     },
 
     /// Returns from the function with the given values as the return values.
-    Return { values: Vec<Value> },
+    Return { vals: Vec<Value> },
 
-    /// Conditionally selects one of the two source registers based on the condition and stores the selected value in the destination register.
+    /// Conditionally selects one of the two source registers based on the condition, and stores the selected value in the destination register.
     Select {
         cond: Value,
         then_val: Value,
         else_val: Value,
-        dest: Value,
+        dst: Value,
     },
 
     /// Applies a signed integer binary operation to the two source registers and stores the result in the destination register.
     IBinOp {
-        bin_op: IntBinOp,
+        op: IntBinOp,
         lhs: Value,
         rhs: Value,
-        dest: Value,
+        dst: Value,
     },
 
     /// Applies a floating-point binary operation to the two source registers and stores the result in the destination register.
     FBinOp {
-        bin_op: FloatBinOp,
+        op: FloatBinOp,
         lhs: Value,
         rhs: Value,
-        dest: Value,
+        dst: Value,
     },
 
     /// Applies a signed integer unary operation to the source register and stores the result in the destination register.
     IUnaryOp {
-        unary_op: IntUnaryOp,
+        op: IntUnaryOp,
         operand: Value,
-        dest: Value,
+        dst: Value,
     },
 
     /// Applies a floating-point unary operation to the source register and stores the result in the destination register.
     FUnaryOp {
-        unary_op: FloatUnaryOp,
+        op: FloatUnaryOp,
         operand: Value,
-        dest: Value,
+        dst: Value,
+    },
+
+    /// Performs an integer comparison between the two source registers and stores the result (i8) in the destination register.
+    ICmp {
+        cmp: IntCmp,
+        lhs: Value,
+        rhs: Value,
+        dst: Value,
+    },
+
+    /// Performs a floating-point comparison between the two source registers and stores the result (i8) in the destination register.
+    FCmp {
+        cmp: FloatCmp,
+        lhs: Value,
+        rhs: Value,
+        dst: Value,
     },
 }

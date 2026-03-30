@@ -14,4 +14,9 @@
 //  limitations under the License.
 //
 
-pub struct IRBuilder {}
+mod block_data;
+
+pub use block_data::BlockData;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Block(pub(crate) u32);

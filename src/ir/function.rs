@@ -14,13 +14,20 @@
 //  limitations under the License.
 //
 
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum IRType {
-    I8,
-    I16,
-    I32,
-    I64,
-    F32,
-    F64,
-    Ptr,
+use crate::ir::{Block, BlockData};
+use std::collections::HashMap;
+
+#[derive(Default)]
+pub struct Function {
+    /// The blocks in the function.
+    pub(crate) blocks: HashMap<Block, BlockData>,
+    /// The entry block of the function.
+    pub(crate) entry_block: Option<Block>,
+}
+
+impl Function {
+    /// Returns a mutable reference to the block data.
+    pub(crate) fn get_block_mut(&mut self, block: &Block) -> Option<&mut BlockData> {
+        self.blocks.get_mut(block)
+    }
 }

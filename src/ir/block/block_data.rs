@@ -14,4 +14,10 @@
 //  limitations under the License.
 //
 
-pub struct Block(pub(crate) u32);
+use crate::ir::{Inst, Value};
+
+#[derive(Default)]
+pub struct BlockData {
+    pub(crate) args: Vec<Value>,
+    pub(crate) insts: Vec<Inst>,
+}

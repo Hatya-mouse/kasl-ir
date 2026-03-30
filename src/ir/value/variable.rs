@@ -14,4 +14,5 @@
 //  limitations under the License.
 //
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Variable(pub(crate) u32);
