@@ -15,30 +15,30 @@
 //
 
 use crate::ir::{
-    Block, Const, FloatBinOp, FloatUnaryOp, IRBuilder, IRType, Inst, IntBinOp, IntUnaryOp, Value,
-    Variable,
+    Block, Const, FloatBinOp, FloatUnaryOp, IRBuilder, IRType, Inst, IntBinOp, IntUnaryOp, Offset,
+    Value, Variable,
     inst::{FloatCmp, IntCmp},
 };
 
 /// A trait for building instructions in the IRBuilder.
 pub trait InstBuilder {
     /// Allocates memory on the stack with the given size and the alignment, and returns the allocated pointer.
-    fn alloc(&mut self, size: u32, alignment: u32) -> Value;
+    fn alloc(&mut self, size: Offset, alignment: Offset) -> Value;
 
     /// Loads a value from the source pointer and returns the loaded value.
-    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: u32) -> Value;
+    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value;
 
     /// Stores a source value to the destination pointer.
-    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: u32);
+    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: Offset);
 
     /// Copies the value stored in the source pointer to the destination pointer.
     fn memcpy(
         &mut self,
         size: Value,
         src_ptr: Value,
-        src_offset: u32,
+        src_offset: Offset,
         dst_ptr: Value,
-        dst_offset: u32,
+        dst_offset: Offset,
     );
 
     /// Declares a constant variable and returns the value.
@@ -86,7 +86,7 @@ pub trait InstBuilder {
 }
 
 impl InstBuilder for IRBuilder {
-    fn alloc(&mut self, size: u32, alignment: u32) -> Value {
+    fn alloc(&mut self, size: Offset, alignment: Offset) -> Value {
         // Create a value with pointer type to store the allocated pointer
         let dst = self.create_val(IRType::Ptr);
 
@@ -98,7 +98,7 @@ impl InstBuilder for IRBuilder {
         dst
     }
 
-    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: u32) -> Value {
+    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value {
         // Create a value to store the loaded value
         let dst = self.create_val(ty);
 
@@ -111,7 +111,7 @@ impl InstBuilder for IRBuilder {
         dst
     }
 
-    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: u32) {
+    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: Offset) {
         // Ensure that the type of the source value matches the specified type.
         assert!(
             self.is_val_type(src, ty),
@@ -131,9 +131,9 @@ impl InstBuilder for IRBuilder {
         &mut self,
         size: Value,
         src_ptr: Value,
-        src_offset: u32,
+        src_offset: Offset,
         dst_ptr: Value,
-        dst_offset: u32,
+        dst_offset: Offset,
     ) {
         // Ensure that type of the both source and destination pointers is pointer type.
         assert!(

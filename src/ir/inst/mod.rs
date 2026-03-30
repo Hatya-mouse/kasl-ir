@@ -22,14 +22,14 @@ pub use bin_op::{FloatBinOp, IntBinOp};
 pub use cmp::{FloatCmp, IntCmp};
 pub use unary_op::{FloatUnaryOp, IntUnaryOp};
 
-use crate::ir::{Block, Const, IRType, Value, Variable};
+use crate::ir::{Block, Const, IRType, Offset, Value, Variable};
 
 /// Defines the instructions in the IR.
 pub enum Inst {
     /// Allocates memory on the stack with the given size and the alignment, and stores the pointer in the destination pointer.
     Alloc {
-        size: u32,
-        alignment: u32,
+        size: Offset,
+        alignment: Offset,
         dst: Value,
     },
 
@@ -37,7 +37,7 @@ pub enum Inst {
     Load {
         ty: IRType,
         src_ptr: Value,
-        src_offset: u32,
+        src_offset: Offset,
         dst: Value,
     },
 
@@ -46,16 +46,16 @@ pub enum Inst {
         ty: IRType,
         src: Value,
         dst_ptr: Value,
-        dst_offset: u32,
+        dst_offset: Offset,
     },
 
     /// Copies the value stored in the source pointer to the destination pointer.
     Memcpy {
         size: Value,
         src_ptr: Value,
-        src_offset: u32,
+        src_offset: Offset,
         dst_ptr: Value,
-        dst_offset: u32,
+        dst_offset: Offset,
     },
 
     /// Assigns a constant value to the value register.

@@ -15,9 +15,11 @@
 //
 
 mod constant;
+mod offset;
 mod variable;
 
 pub use constant::Const;
+pub use offset::{Offset, ResolveOffset};
 pub use variable::Variable;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

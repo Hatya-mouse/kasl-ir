@@ -29,4 +29,4 @@ pub use block::Block;
 pub use builder::{IRBuilder, InstBuilder};
 pub use inst::{FloatBinOp, FloatCmp, FloatUnaryOp, Inst, IntBinOp, IntCmp, IntUnaryOp};
 pub use types::IRType;
-pub use value::{Const, Value, Variable};
+pub use value::{Const, Offset, ResolveOffset, Value, Variable};
