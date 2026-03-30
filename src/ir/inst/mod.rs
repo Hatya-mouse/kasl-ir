@@ -58,7 +58,6 @@ pub enum Inst {
         size: u32,
         value: u8,
         dst_ptr: Value,
-        dst_offset: Offset,
     },
 
     /// Assigns a constant value to the value register.

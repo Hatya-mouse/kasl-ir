@@ -42,7 +42,7 @@ pub trait InstBuilder {
     );
 
     /// Fills the destination pointer with the given value.
-    fn memset(&mut self, size: u32, value: u8, dst_ptr: Value, dst_offset: Offset);
+    fn memset(&mut self, size: u32, value: u8, dst_ptr: Value);
 
     /// Declares a constant variable and returns the value.
     fn const_val(&mut self, const_val: Const) -> Value;
@@ -163,12 +163,11 @@ impl InstBuilder for IRBuilder {
         });
     }
 
-    fn memset(&mut self, size: u32, value: u8, dst_ptr: Value, dst_offset: Offset) {
+    fn memset(&mut self, size: u32, value: u8, dst_ptr: Value) {
         self.push_inst(Inst::Memset {
             size,
             value,
             dst_ptr,
-            dst_offset,
         });
     }
 
