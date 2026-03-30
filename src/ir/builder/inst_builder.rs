@@ -66,6 +66,9 @@ pub trait InstBuilder {
     /// Conditionally selects one of the two source registers based on the condition, and returns the selected value.
     fn select(&mut self, cond: Value, then_val: Value, else_val: Value) -> Value;
 
+    /// Converts the value to the specified type and returns the converted value.
+    fn convert(&mut self, src: Value, dst_ty: IRType) -> Value;
+
     /// Applies a signed integer binary operation to the two source registers and returns the result.
     fn ibop(&mut self, op: IntBinOp, lhs: Value, rhs: Value) -> Value;
 
@@ -235,6 +238,20 @@ impl InstBuilder for IRBuilder {
             cond,
             then_val,
             else_val,
+            dst,
+        });
+        dst
+    }
+
+    fn convert(&mut self, src: Value, dst_ty: IRType) -> Value {
+        // Create a value to store the converted value
+        let dst = self.create_val(dst_ty);
+
+        let src_ty = self.get_val_type(src);
+        self.push_inst(Inst::Convert {
+            src_ty,
+            src,
+            dst_ty,
             dst,
         });
         dst

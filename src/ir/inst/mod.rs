@@ -87,6 +87,14 @@ pub enum Inst {
         dst: Value,
     },
 
+    /// Converts the value to the specified type and stores the result in the destination register.
+    Convert {
+        src_ty: IRType,
+        src: Value,
+        dst_ty: IRType,
+        dst: Value,
+    },
+
     /// Applies a signed integer binary operation to the two source registers and stores the result in the destination register.
     IBinOp {
         op: IntBinOp,
