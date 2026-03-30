@@ -34,7 +34,7 @@ pub trait InstBuilder {
     /// Copies the value stored in the source pointer to the destination pointer.
     fn memcpy(
         &mut self,
-        size: Value,
+        size: u32,
         src_ptr: Value,
         src_offset: Offset,
         dst_ptr: Value,
@@ -144,7 +144,7 @@ impl InstBuilder for IRBuilder {
 
     fn memcpy(
         &mut self,
-        size: Value,
+        size: u32,
         src_ptr: Value,
         src_offset: Offset,
         dst_ptr: Value,
