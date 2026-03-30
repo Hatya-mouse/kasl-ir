@@ -66,8 +66,20 @@ pub trait InstBuilder {
     /// Conditionally selects one of the two source registers based on the condition, and returns the selected value.
     fn select(&mut self, cond: Value, then_val: Value, else_val: Value) -> Value;
 
-    /// Converts the value to the specified type and returns the converted value.
-    fn convert(&mut self, src: Value, dst_ty: IRType) -> Value;
+    /// Resizes the integer value to the specified type and returns the resized value.
+    fn iresize(&mut self, src: Value, dst_ty: IRType) -> Value;
+
+    /// Resizes the floating-point value to the specified type and returns the resized value.
+    fn fresize(&mut self, src: Value, dst_ty: IRType) -> Value;
+
+    /// Converts the integer value to the specified floating-point type.
+    fn itof(&mut self, src: Value) -> Value;
+
+    /// Converts the floating-point value to the specified integer type.
+    fn ftoi(&mut self, src: Value) -> Value;
+
+    /// Adds the offset to the pointer and returns the resulting pointer.
+    fn ptr_add(&mut self, ptr: Value, offset: Offset) -> Value;
 
     /// Applies a signed integer binary operation to the two source registers and returns the result.
     fn ibop(&mut self, op: IntBinOp, lhs: Value, rhs: Value) -> Value;
@@ -243,17 +255,84 @@ impl InstBuilder for IRBuilder {
         dst
     }
 
-    fn convert(&mut self, src: Value, dst_ty: IRType) -> Value {
-        // Create a value to store the converted value
+    fn iresize(&mut self, src: Value, dst_ty: IRType) -> Value {
+        // Check if the source value is integer type and the destination type is also integer type
+        let src_ty = self.get_val_type(src);
+        assert!(
+            src_ty.is_int(),
+            "Source value of iresize must be integer type"
+        );
+        assert!(
+            dst_ty.is_int(),
+            "Destination type of iresize must be integer type"
+        );
+
+        // Create a value to store the resized value
         let dst = self.create_val(dst_ty);
 
+        self.push_inst(Inst::IResize { src, dst_ty, dst });
+        dst
+    }
+
+    fn fresize(&mut self, src: Value, dst_ty: IRType) -> Value {
+        // Check if the source value is integer type and the destination type is also integer type
         let src_ty = self.get_val_type(src);
-        self.push_inst(Inst::Convert {
-            src_ty,
-            src,
-            dst_ty,
-            dst,
-        });
+        assert!(
+            src_ty.is_float(),
+            "Source value of fresize must be integer type"
+        );
+        assert!(
+            dst_ty.is_float(),
+            "Destination type of fresize must be integer type"
+        );
+
+        // Create a value to store the resized value
+        let dst = self.create_val(dst_ty);
+
+        self.push_inst(Inst::FResize { src, dst_ty, dst });
+        dst
+    }
+
+    fn itof(&mut self, src: Value) -> Value {
+        // Check if the source value is integer type
+        let src_ty = self.get_val_type(src);
+
+        // Get the destination type
+        let dst_ty = match src_ty {
+            IRType::I8 | IRType::I16 => {
+                panic!("Integer type smaller than 32-bit is not supported in itof")
+            }
+            IRType::I32 => IRType::F32,
+            IRType::I64 => IRType::F64,
+            _ => panic!("Source value of int_to_float must be integer type"),
+        };
+        // Create a value to store the resized value
+        let dst = self.create_val(dst_ty);
+
+        self.push_inst(Inst::IToF { src, dst_ty, dst });
+        dst
+    }
+
+    fn ftoi(&mut self, src: Value) -> Value {
+        // Check if the source value is float type
+        let src_ty = self.get_val_type(src);
+
+        // Get the destination type
+        let dst_ty = match src_ty {
+            IRType::F32 => IRType::I32,
+            IRType::F64 => IRType::I64,
+            _ => panic!("Source value of float_to_int must be float type"),
+        };
+        // Create a value to store the resized value
+        let dst = self.create_val(dst_ty);
+
+        self.push_inst(Inst::FToI { src, dst_ty, dst });
+        dst
+    }
+
+    fn ptr_add(&mut self, ptr: Value, offset: Offset) -> Value {
+        let dst = self.create_val(IRType::Ptr);
+        self.push_inst(Inst::PtrAdd { ptr, offset, dst });
         dst
     }
 

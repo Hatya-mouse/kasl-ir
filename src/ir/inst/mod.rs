@@ -87,11 +87,38 @@ pub enum Inst {
         dst: Value,
     },
 
-    /// Converts the value to the specified type and stores the result in the destination register.
-    Convert {
-        src_ty: IRType,
+    /// Resize the integer value in the source register to the destination type and stores the result in the destination register.
+    IResize {
         src: Value,
         dst_ty: IRType,
+        dst: Value,
+    },
+
+    /// Resize the floating-pointer value in the source register to the destination type and stores the result in the destination register.
+    FResize {
+        src: Value,
+        dst_ty: IRType,
+        dst: Value,
+    },
+
+    /// Converts the integer value in the source register to the floating-point value and stores the result in the destination register.
+    IToF {
+        src: Value,
+        dst_ty: IRType,
+        dst: Value,
+    },
+
+    /// Converts the floating-point value in the source register to the integer value and stores the result in the destination register.
+    FToI {
+        src: Value,
+        dst_ty: IRType,
+        dst: Value,
+    },
+
+    /// Adds the offset to the pointer and stores the reesult in the destination pointer.
+    PtrAdd {
+        ptr: Value,
+        offset: Offset,
         dst: Value,
     },
 
