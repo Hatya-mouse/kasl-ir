@@ -27,11 +27,7 @@ use crate::ir::{Block, Const, IRType, Offset, Value, Variable};
 /// Defines the instructions in the IR.
 pub enum Inst {
     /// Allocates memory on the stack with the given size and the alignment, and stores the pointer in the destination pointer.
-    Alloc {
-        size: Offset,
-        alignment: Offset,
-        dst: Value,
-    },
+    Alloc { size: u32, align: u32, dst: Value },
 
     /// Loads a value from the source pointer and stores the loaded value in the destination pointer.
     Load {

@@ -23,7 +23,7 @@ use crate::ir::{
 /// A trait for building instructions in the IRBuilder.
 pub trait InstBuilder {
     /// Allocates memory on the stack with the given size and the alignment, and returns the allocated pointer.
-    fn alloc(&mut self, size: Offset, alignment: Offset) -> Value;
+    fn alloc(&mut self, size: u32, align: u32) -> Value;
 
     /// Loads a value from the source pointer and returns the loaded value.
     fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value;
@@ -101,15 +101,11 @@ pub trait InstBuilder {
 }
 
 impl InstBuilder for IRBuilder {
-    fn alloc(&mut self, size: Offset, alignment: Offset) -> Value {
+    fn alloc(&mut self, size: u32, align: u32) -> Value {
         // Create a value with pointer type to store the allocated pointer
         let dst = self.create_val(IRType::Ptr);
 
-        self.push_inst(Inst::Alloc {
-            size,
-            alignment,
-            dst,
-        });
+        self.push_inst(Inst::Alloc { size, align, dst });
         dst
     }
 
