@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
+use std::fmt::Display;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum IRType {
     I8,
@@ -23,4 +25,29 @@ pub enum IRType {
     F32,
     F64,
     Ptr,
+}
+
+impl Display for IRType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let s = match self {
+            IRType::I8 => "i8",
+            IRType::I16 => "i16",
+            IRType::I32 => "i32",
+            IRType::I64 => "i64",
+            IRType::F32 => "f32",
+            IRType::F64 => "f64",
+            IRType::Ptr => "ptr",
+        };
+        write!(f, "{}", s)
+    }
+}
+
+impl IRType {
+    pub fn is_int(&self) -> bool {
+        matches!(self, IRType::I8 | IRType::I16 | IRType::I32 | IRType::I64)
+    }
+
+    pub fn is_float(&self) -> bool {
+        matches!(self, IRType::F32 | IRType::F64)
+    }
 }

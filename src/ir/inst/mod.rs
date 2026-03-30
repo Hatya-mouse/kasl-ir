@@ -52,10 +52,10 @@ pub enum Inst {
     /// Copies the value stored in the source pointer to the destination pointer.
     Memcpy {
         size: Value,
-        dst_ptr: Value,
-        dst_offset: u32,
         src_ptr: Value,
         src_offset: u32,
+        dst_ptr: Value,
+        dst_offset: u32,
     },
 
     /// Assigns a constant value to the value register.

@@ -20,6 +20,7 @@ use crate::ir::{
     inst::{FloatCmp, IntCmp},
 };
 
+/// A trait for building instructions in the IRBuilder.
 pub trait InstBuilder {
     /// Allocates memory on the stack with the given size and the alignment, and returns the allocated pointer.
     fn alloc(&mut self, size: u32, alignment: u32) -> Value;
@@ -34,10 +35,10 @@ pub trait InstBuilder {
     fn memcpy(
         &mut self,
         size: Value,
-        dst_ptr: Value,
-        dst_offset: u32,
         src_ptr: Value,
         src_offset: u32,
+        dst_ptr: Value,
+        dst_offset: u32,
     );
 
     /// Declares a constant variable and returns the value.
@@ -86,7 +87,9 @@ pub trait InstBuilder {
 
 impl InstBuilder for IRBuilder {
     fn alloc(&mut self, size: u32, alignment: u32) -> Value {
-        let dst = self.gen_val_id();
+        // Create a value with pointer type to store the allocated pointer
+        let dst = self.create_val(IRType::Ptr);
+
         self.push_inst(Inst::Alloc {
             size,
             alignment,
@@ -96,7 +99,9 @@ impl InstBuilder for IRBuilder {
     }
 
     fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: u32) -> Value {
-        let dst = self.gen_val_id();
+        // Create a value to store the loaded value
+        let dst = self.create_val(ty);
+
         self.push_inst(Inst::Load {
             ty,
             src_ptr,
@@ -107,6 +112,13 @@ impl InstBuilder for IRBuilder {
     }
 
     fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: u32) {
+        // Ensure that the type of the source value matches the specified type.
+        assert!(
+            self.is_val_type(src, ty),
+            "Type of the store source value does not match the specified type {}",
+            ty
+        );
+
         self.push_inst(Inst::Store {
             ty,
             src,
@@ -118,22 +130,34 @@ impl InstBuilder for IRBuilder {
     fn memcpy(
         &mut self,
         size: Value,
-        dst_ptr: Value,
-        dst_offset: u32,
         src_ptr: Value,
         src_offset: u32,
+        dst_ptr: Value,
+        dst_offset: u32,
     ) {
+        // Ensure that type of the both source and destination pointers is pointer type.
+        assert!(
+            self.is_val_type(dst_ptr, IRType::Ptr),
+            "Type of the memcpy destination pointer is not pointer type"
+        );
+        assert!(
+            self.is_val_type(src_ptr, IRType::Ptr),
+            "Type of the memcpy source pointer is not pointer type"
+        );
+
         self.push_inst(Inst::Memcpy {
             size,
-            dst_ptr,
-            dst_offset,
             src_ptr,
             src_offset,
+            dst_ptr,
+            dst_offset,
         });
     }
 
     fn const_val(&mut self, const_val: Const) -> Value {
-        let dst = self.gen_val_id();
+        // Create a value to store the created contant value
+        let dst = self.create_val(const_val.get_type());
+
         self.push_inst(Inst::Const {
             value: const_val,
             dst,
@@ -142,6 +166,14 @@ impl InstBuilder for IRBuilder {
     }
 
     fn assign(&mut self, var: Variable, src: Value) {
+        // Check if the variable type matches the type of the source value
+        let var_ty = self.get_var_type(var);
+        assert!(
+            self.is_val_type(src, var_ty),
+            "Type of the assign source value does not match the variable type {}",
+            var_ty
+        );
+
         self.push_inst(Inst::Assign { var, src });
     }
 
@@ -160,6 +192,12 @@ impl InstBuilder for IRBuilder {
         else_block: Block,
         else_args: &[Value],
     ) {
+        // Ensure that the type of the condition value is 8-bit integer type
+        assert!(
+            self.is_val_type(cond, IRType::I8),
+            "Type of the brif condition value must be 8-bit integer type"
+        );
+
         self.push_inst(Inst::Brif {
             cond,
             then_block,
@@ -176,7 +214,23 @@ impl InstBuilder for IRBuilder {
     }
 
     fn select(&mut self, cond: Value, then_val: Value, else_val: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the condition value is 8-bit integer type
+        assert!(
+            self.is_val_type(cond, IRType::I8),
+            "Type of the select condition value must be 8-bit integer type"
+        );
+        // Ensure that the type of the then value and else value are the same
+        let then_ty = self.get_val_type(then_val);
+        let else_ty = self.get_val_type(else_val);
+        assert_eq!(
+            then_ty, else_ty,
+            "Type of the select then value {} does not match the type of the else value {}",
+            then_ty, else_ty
+        );
+
+        // Create a value to store the selected value
+        let dst = self.create_val(then_ty);
+
         self.push_inst(Inst::Select {
             cond,
             then_val,
@@ -187,37 +241,145 @@ impl InstBuilder for IRBuilder {
     }
 
     fn ibop(&mut self, op: IntBinOp, lhs: Value, rhs: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the lhs value and rhs value are the same type
+        let lhs_ty = self.get_val_type(lhs);
+        let rhs_ty = self.get_val_type(rhs);
+        assert_eq!(
+            lhs_ty, rhs_ty,
+            "Type of the binary op lhs {} does not match the type of the rhs {}",
+            lhs_ty, rhs_ty
+        );
+        // Ensure that the type of the lhs value and rhs value are integer type
+        assert!(
+            lhs_ty.is_int(),
+            "Type of the lhs is expected to be integer but got {}",
+            lhs_ty
+        );
+        assert!(
+            rhs_ty.is_int(),
+            "Type of the rhs is expected to be integer but got {}",
+            rhs_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(lhs_ty);
+
         self.push_inst(Inst::IBinOp { op, lhs, rhs, dst });
         dst
     }
 
     fn fbop(&mut self, op: FloatBinOp, lhs: Value, rhs: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the lhs value and rhs value are the same type
+        let lhs_ty = self.get_val_type(lhs);
+        let rhs_ty = self.get_val_type(rhs);
+        assert_eq!(
+            lhs_ty, rhs_ty,
+            "Type of the binary op lhs {} does not match the type of the rhs {}",
+            lhs_ty, rhs_ty
+        );
+        // Ensure that the type of the lhs value and rhs value are float type
+        assert!(
+            lhs_ty.is_float(),
+            "Type of the lhs is expected to be float but got {}",
+            lhs_ty
+        );
+        assert!(
+            rhs_ty.is_float(),
+            "Type of the rhs is expected to be float but got {}",
+            rhs_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(lhs_ty);
+
         self.push_inst(Inst::FBinOp { op, lhs, rhs, dst });
         dst
     }
 
     fn iuop(&mut self, op: IntUnaryOp, operand: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the operand value is integer type
+        let operand_ty = self.get_val_type(operand);
+        assert!(
+            operand_ty.is_int(),
+            "Type of the unary op operand is expected to be integer but got {}",
+            operand_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(operand_ty);
+
         self.push_inst(Inst::IUnaryOp { op, operand, dst });
         dst
     }
 
     fn fuop(&mut self, op: FloatUnaryOp, operand: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the operand value is float type
+        let operand_ty = self.get_val_type(operand);
+        assert!(
+            operand_ty.is_float(),
+            "Type of the unary op operand is expected to be float but got {}",
+            operand_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(operand_ty);
+
         self.push_inst(Inst::FUnaryOp { op, operand, dst });
         dst
     }
 
     fn icmp(&mut self, cmp: IntCmp, lhs: Value, rhs: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the lhs value and rhs value are the same type
+        let lhs_ty = self.get_val_type(lhs);
+        let rhs_ty = self.get_val_type(rhs);
+        assert_eq!(
+            lhs_ty, rhs_ty,
+            "Type of the int cmp lhs {} does not match the type of the rhs {}",
+            lhs_ty, rhs_ty
+        );
+        // Ensure that the type of the lhs value and rhs value are integer type
+        assert!(
+            lhs_ty.is_int(),
+            "Type of the lhs is expected to be integer but got {}",
+            lhs_ty
+        );
+        assert!(
+            rhs_ty.is_int(),
+            "Type of the rhs is expected to be integer but got {}",
+            rhs_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(IRType::I8);
+
         self.push_inst(Inst::ICmp { cmp, lhs, rhs, dst });
         dst
     }
 
     fn fcmp(&mut self, cmp: FloatCmp, lhs: Value, rhs: Value) -> Value {
-        let dst = self.gen_val_id();
+        // Ensure that the type of the lhs value and rhs value are the same type
+        let lhs_ty = self.get_val_type(lhs);
+        let rhs_ty = self.get_val_type(rhs);
+        assert_eq!(
+            lhs_ty, rhs_ty,
+            "Type of the float cmp lhs {} does not match the type of the rhs {}",
+            lhs_ty, rhs_ty
+        );
+        // Ensure that the type of the lhs value and rhs value are float type
+        assert!(
+            lhs_ty.is_float(),
+            "Type of the lhs is expected to be float but got {}",
+            lhs_ty
+        );
+        assert!(
+            rhs_ty.is_float(),
+            "Type of the rhs is expected to be float but got {}",
+            rhs_ty
+        );
+
+        // Create a value to store the result
+        let dst = self.create_val(IRType::I8);
+
         self.push_inst(Inst::FCmp { cmp, lhs, rhs, dst });
         dst
     }
