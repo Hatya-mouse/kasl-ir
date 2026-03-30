@@ -29,7 +29,7 @@ pub trait InstBuilder {
     fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value;
 
     /// Stores a source value to the destination pointer.
-    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: Offset);
+    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset);
 
     /// Copies the value stored in the source pointer to the destination pointer.
     fn memcpy(
@@ -125,16 +125,8 @@ impl InstBuilder for IRBuilder {
         dst
     }
 
-    fn store(&mut self, ty: IRType, src: Value, dst_ptr: Value, dst_offset: Offset) {
-        // Ensure that the type of the source value matches the specified type.
-        assert!(
-            self.is_val_type(src, ty),
-            "Type of the store source value does not match the specified type {}",
-            ty
-        );
-
+    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset) {
         self.push_inst(Inst::Store {
-            ty,
             src,
             dst_ptr,
             dst_offset,

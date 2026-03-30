@@ -39,7 +39,6 @@ pub enum Inst {
 
     /// Stores a value to the destination pointer.
     Store {
-        ty: IRType,
         src: Value,
         dst_ptr: Value,
         dst_offset: Offset,
