@@ -20,23 +20,23 @@ mod unary_op;
 pub use bin_op::{FloatBinOp, IntBinOp};
 pub use unary_op::{FloatUnaryOp, IntUnaryOp};
 
-use crate::ir::{Block, Const, IRType, Value};
+use crate::ir::{Block, Const, IRType, Value, value::Variable};
 
 /// Defines the instructions in the IR.
 pub enum Inst {
-    /// Allocates memory on the stack with the given size and the alignment, and stores the pointer in the destination register.
+    /// Allocates memory on the stack with the given size and the alignment, and stores the pointer in the destination pointer.
     Alloc {
         size: u32,
         alignment: u32,
-        dest: Value,
+        dst: Value,
     },
 
-    /// Loads a value from the memory address stored in the source register and stores the loaded value in the destination register.
+    /// Loads a value from the source pointer and stores the loaded value in the destination pointer.
     Load {
         ty: IRType,
         ptr: Value,
         offset: u32,
-        dest: Value,
+        dst: Value,
     },
 
     /// Stores a src value to the destination pointer.
@@ -57,7 +57,10 @@ pub enum Inst {
     },
 
     /// Assigns a constant value to the value register.
-    Const { value: Const, dest: Value },
+    Const { value: Const, dst: Value },
+
+    /// Assigns the value of the source register to the destination register.
+    Assign { var: Variable, src: Value },
 
     /// Jumps to the target block with the given arguments.
     Jump { block: Block, args: Vec<Value> },

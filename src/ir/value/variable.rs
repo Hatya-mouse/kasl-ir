@@ -14,10 +14,4 @@
 //  limitations under the License.
 //
 
-mod constant;
-mod variable;
-
-pub use constant::Const;
-pub use variable::Variable;
-
-pub struct Value(pub(crate) u32);
+pub struct Variable(pub(crate) u32);
