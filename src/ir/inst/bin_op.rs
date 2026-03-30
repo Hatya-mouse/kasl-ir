@@ -36,6 +36,18 @@ pub enum IntBinOp {
     Min,
     /// Returns the maximum of the first operand and the second operand.
     Max,
+    /// Bitwise AND.
+    BAnd,
+    /// Bitwise OR.
+    BOr,
+    /// Bitwise XOR.
+    BXor,
+    /// Bitwise NAND.
+    BNand,
+    /// Bitwise NOR.
+    BNor,
+    /// Bitwise XNOR.
+    BXnor,
 }
 
 /// Defines binary operations for floating-point values.
