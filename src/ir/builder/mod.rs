@@ -76,17 +76,12 @@ impl IRBuilder {
     // --- VARIABLE MANAGEMENT ---
 
     /// Creates a new variable with the given type.
-    fn create_var(&mut self, ty: IRType) -> Variable {
+    pub fn create_var(&mut self, ty: IRType) -> Variable {
         let var = Variable(self.next_var_id);
         self.next_var_id += 1;
 
         self.variables.insert(var, ty);
         var
-    }
-
-    /// Checks if the given variable has the specified type.
-    fn is_var_type(&self, var: Variable, ty: IRType) -> bool {
-        self.get_var_type(var) == ty
     }
 
     /// Returns the type of the given variable.
