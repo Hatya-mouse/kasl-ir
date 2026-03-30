@@ -27,6 +27,6 @@ pub(crate) use block::BlockData;
 
 pub use block::Block;
 pub use builder::{IRBuilder, InstBuilder};
-pub use inst::{FloatBinOp, FloatUnaryOp, Inst, IntBinOp, IntUnaryOp};
+pub use inst::{FloatBinOp, FloatCmp, FloatUnaryOp, Inst, IntBinOp, IntCmp, IntUnaryOp};
 pub use types::IRType;
 pub use value::{Const, Value, Variable};
