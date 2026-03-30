@@ -46,7 +46,10 @@ impl Display for IRType {
 
 impl IRType {
     pub fn is_int(&self) -> bool {
-        matches!(self, IRType::I8 | IRType::I16 | IRType::I32 | IRType::I64)
+        matches!(
+            self,
+            IRType::I8 | IRType::I16 | IRType::I32 | IRType::I64 | IRType::Ptr
+        )
     }
 
     pub fn is_float(&self) -> bool {
