@@ -53,6 +53,14 @@ pub enum Inst {
         dst_offset: Offset,
     },
 
+    /// Fills the memory with the given immediate u8 value.
+    Memset {
+        size: u32,
+        value: u8,
+        dst_ptr: Value,
+        dst_offset: Offset,
+    },
+
     /// Assigns a constant value to the value register.
     Const { value: Const, dst: Value },
 
