@@ -30,6 +30,8 @@ pub enum Const {
     F32(f32),
     /// A constant 64-bit floating-point value.
     F64(f64),
+    /// A constant pointer-size integer value.
+    Ptr(i64),
 }
 
 impl Const {
@@ -42,6 +44,7 @@ impl Const {
             Const::I64(_) => IRType::I64,
             Const::F32(_) => IRType::F32,
             Const::F64(_) => IRType::F64,
+            Const::Ptr(_) => IRType::Ptr,
         }
     }
 }
