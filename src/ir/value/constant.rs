@@ -14,4 +14,22 @@
 //  limitations under the License.
 //
 
-pub struct Inst {}
+pub enum Const {
+    /// A constant 8-bit integer value.
+    I8(i8),
+
+    /// A constant 16-bit integer value.
+    I16(i16),
+
+    /// A constant 32-bit integer value.
+    I32(i32),
+
+    /// A constant 64-bit integer value.
+    I64(i64),
+
+    /// A constant 32-bit floating-point value.
+    F32(f32),
+
+    /// A constant 64-bit floating-point value.
+    F64(f64),
+}

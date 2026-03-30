@@ -14,13 +14,4 @@
 //  limitations under the License.
 //
 
-mod block;
-mod builder;
-mod inst;
-mod types;
-mod value;
-
-pub use block::Block;
-pub use builder::IRBuilder;
-pub use types::IRType;
-pub use value::{Const, Value};
+pub struct Block(pub(crate) u32);

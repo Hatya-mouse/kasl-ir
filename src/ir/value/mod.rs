@@ -14,10 +14,8 @@
 //  limitations under the License.
 //
 
-pub enum Inst {
-    Select {
-        cond: Value,
-        then_val: Value,
-        else_val: Value,
-    },
-}
+mod constant;
+
+pub use constant::Const;
+
+pub struct Value(pub(crate) u32);
