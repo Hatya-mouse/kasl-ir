@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
+use std::fmt::Display;
+
 /// An offset used in memory access instructions.
 pub enum Offset {
     /// Physical byte count.
@@ -39,6 +41,15 @@ impl ResolveOffset for Offset {
         match self {
             Offset::Immediate(n) => *n,
             Offset::PointerScaled(n) => *n * ptr_size,
+        }
+    }
+}
+
+impl Display for Offset {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Offset::Immediate(offset) => write!(f, "imm({})", offset),
+            Offset::PointerScaled(scale) => write!(f, "ptr*{}", scale),
         }
     }
 }

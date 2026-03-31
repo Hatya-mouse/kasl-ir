@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
+use std::fmt::Display;
+
 /// Comparison operations for integers.
 pub enum IntCmp {
     /// Equal
@@ -38,6 +40,23 @@ pub enum IntCmp {
     Ule,
 }
 
+impl Display for IntCmp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            IntCmp::Eq => write!(f, "eq"),
+            IntCmp::Ne => write!(f, "ne"),
+            IntCmp::Sgt => write!(f, "sgt"),
+            IntCmp::Sge => write!(f, "sge"),
+            IntCmp::Slt => write!(f, "slt"),
+            IntCmp::Sle => write!(f, "sle"),
+            IntCmp::Ugt => write!(f, "ugt"),
+            IntCmp::Uge => write!(f, "uge"),
+            IntCmp::Ult => write!(f, "ult"),
+            IntCmp::Ule => write!(f, "ule"),
+        }
+    }
+}
+
 /// Comparison operations for floating-point numbers.
 pub enum FloatCmp {
     /// Equal
@@ -52,4 +71,17 @@ pub enum FloatCmp {
     Lt,
     /// Less than or equal
     Le,
+}
+
+impl Display for FloatCmp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            FloatCmp::Eq => write!(f, "eq"),
+            FloatCmp::Ne => write!(f, "ne"),
+            FloatCmp::Gt => write!(f, "gt"),
+            FloatCmp::Ge => write!(f, "ge"),
+            FloatCmp::Lt => write!(f, "lt"),
+            FloatCmp::Le => write!(f, "le"),
+        }
+    }
 }

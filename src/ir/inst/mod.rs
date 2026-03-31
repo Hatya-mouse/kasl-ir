@@ -16,6 +16,7 @@
 
 mod bin_op;
 mod cmp;
+mod inst_display;
 mod unary_op;
 
 pub use bin_op::{FloatBinOp, IntBinOp};

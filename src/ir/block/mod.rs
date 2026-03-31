@@ -18,5 +18,13 @@ mod block_data;
 
 pub use block_data::BlockData;
 
+use std::fmt::Display;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Block(pub(crate) u32);
+
+impl Display for Block {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "block{}", self.0)
+    }
+}

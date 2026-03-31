@@ -15,6 +15,7 @@
 //
 
 use crate::ir::IRType;
+use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Const {
@@ -45,6 +46,20 @@ impl Const {
             Const::F32(_) => IRType::F32,
             Const::F64(_) => IRType::F64,
             Const::Ptr(_) => IRType::Ptr,
+        }
+    }
+}
+
+impl Display for Const {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Const::I8(val) => write!(f, "i8({})", val),
+            Const::I16(val) => write!(f, "i16({})", val),
+            Const::I32(val) => write!(f, "i32({})", val),
+            Const::I64(val) => write!(f, "i64({})", val),
+            Const::F32(val) => write!(f, "f32({})", val),
+            Const::F64(val) => write!(f, "f64({})", val),
+            Const::Ptr(val) => write!(f, "ptr({})", val),
         }
     }
 }

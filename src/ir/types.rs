@@ -37,8 +37,8 @@ impl Display for IRType {
             IRType::I64 => "i64",
             IRType::F32 => "f32",
             IRType::F64 => "f64",
-            IRType::Void => "Void",
-            IRType::Ptr => "Ptr",
+            IRType::Void => "void",
+            IRType::Ptr => "ptr",
         };
         write!(f, "{}", s)
     }

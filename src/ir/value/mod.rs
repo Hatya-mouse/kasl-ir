@@ -22,5 +22,20 @@ pub use constant::Const;
 pub use offset::{Offset, ResolveOffset};
 pub use variable::Variable;
 
+use std::fmt::Display;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Value(pub(crate) u32);
+
+impl Display for Value {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "%{}", self.0)
+    }
+}
+
+pub(crate) fn fmt_vals(args: &[Value]) -> String {
+    args.iter()
+        .map(|arg| arg.to_string())
+        .collect::<Vec<_>>()
+        .join(", ")
+}

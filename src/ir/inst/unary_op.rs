@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
+use std::fmt::Display;
+
 /// Defines unary operations for integer values.
 pub enum IntUnaryOp {
     /// Absolute value of the operand.
@@ -24,6 +26,17 @@ pub enum IntUnaryOp {
     Neg,
     /// Bitwise not operation.
     BNot,
+}
+
+impl Display for IntUnaryOp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            IntUnaryOp::Abs => write!(f, "abs"),
+            IntUnaryOp::Sgn => write!(f, "sgn"),
+            IntUnaryOp::Neg => write!(f, "neg"),
+            IntUnaryOp::BNot => write!(f, "bnot"),
+        }
+    }
 }
 
 /// Defines unary operations for floating-point values.
@@ -58,4 +71,26 @@ pub enum FloatUnaryOp {
     Log,
     /// Calculates the square root of the operand.
     Sqrt,
+}
+
+impl Display for FloatUnaryOp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            FloatUnaryOp::Abs => write!(f, "abs"),
+            FloatUnaryOp::Sgn => write!(f, "sgn"),
+            FloatUnaryOp::Neg => write!(f, "neg"),
+            FloatUnaryOp::Floor => write!(f, "floor"),
+            FloatUnaryOp::Ceil => write!(f, "ceil"),
+            FloatUnaryOp::Round => write!(f, "round"),
+            FloatUnaryOp::Sin => write!(f, "sin"),
+            FloatUnaryOp::Cos => write!(f, "cos"),
+            FloatUnaryOp::Tan => write!(f, "tan"),
+            FloatUnaryOp::Asin => write!(f, "asin"),
+            FloatUnaryOp::Acos => write!(f, "acos"),
+            FloatUnaryOp::Atan => write!(f, "atan"),
+            FloatUnaryOp::Exp => write!(f, "exp"),
+            FloatUnaryOp::Log => write!(f, "log"),
+            FloatUnaryOp::Sqrt => write!(f, "sqrt"),
+        }
+    }
 }

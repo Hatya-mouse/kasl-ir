@@ -14,5 +14,13 @@
 //  limitations under the License.
 //
 
+use std::fmt::Display;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Variable(pub(crate) u32);
+
+impl Display for Variable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "v{}", self.0)
+    }
+}

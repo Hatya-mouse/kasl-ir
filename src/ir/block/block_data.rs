@@ -14,10 +14,21 @@
 //  limitations under the License.
 //
 
-use crate::ir::{Inst, Value};
+use crate::ir::{Inst, Value, value::fmt_vals};
+use std::fmt::Display;
 
 #[derive(Default)]
 pub struct BlockData {
     pub(crate) args: Vec<Value>,
     pub(crate) insts: Vec<Inst>,
+}
+
+impl Display for BlockData {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "({}):", fmt_vals(&self.args))?;
+        for inst in &self.insts {
+            writeln!(f, "    {}", inst)?;
+        }
+        writeln!(f)
+    }
 }
