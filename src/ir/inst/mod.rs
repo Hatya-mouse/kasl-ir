@@ -172,4 +172,20 @@ pub enum Inst {
         rhs: Value,
         dst: Value,
     },
+
+    /// Performs an integer comparison with an immediate value, and stores the result in the destination register.
+    ICmpImm {
+        cmp: IntCmp,
+        lhs: Value,
+        rhs: i64,
+        dst: Value,
+    },
+
+    /// Performs a floating-point comparison with an immediate value, and stores the result in the destination register.
+    FCmpImm {
+        cmp: FloatCmp,
+        lhs: Value,
+        rhs: f64,
+        dst: Value,
+    },
 }
