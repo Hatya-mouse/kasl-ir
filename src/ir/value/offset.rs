@@ -48,7 +48,7 @@ impl ResolveOffset for Offset {
 impl Display for Offset {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Offset::Immediate(offset) => write!(f, "imm({})", offset),
+            Offset::Immediate(offset) => write!(f, "{}", offset),
             Offset::PointerScaled(scale) => write!(f, "ptr*{}", scale),
         }
     }
