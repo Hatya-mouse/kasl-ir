@@ -18,6 +18,8 @@
 pub enum IntUnaryOp {
     /// Absolute value of the operand.
     Abs,
+    /// Signum operation, which returns -1 for negative values, 0 for zero, and 1 for positive values.
+    Sgn,
     /// Negation operation.
     Neg,
 }
@@ -26,6 +28,8 @@ pub enum IntUnaryOp {
 pub enum FloatUnaryOp {
     /// Absolute value of the operand.
     Abs,
+    /// Signum operation, which returns -1.0 for negative values, 0.0 for zero, and 1.0 for positive values.
+    Sgn,
     /// Negation operation.
     Neg,
     /// Floor operation.
