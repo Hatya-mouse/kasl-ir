@@ -22,6 +22,8 @@ pub enum IntUnaryOp {
     Sgn,
     /// Negation operation.
     Neg,
+    /// Bitwise not operation.
+    BNot,
 }
 
 /// Defines unary operations for floating-point values.
