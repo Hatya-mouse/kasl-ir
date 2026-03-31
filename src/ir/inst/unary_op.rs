@@ -46,6 +46,12 @@ pub enum FloatUnaryOp {
     Cos,
     /// Calculates the tangent of the operand.
     Tan,
+    /// Calculates the arcsine of the operand.
+    Asin,
+    /// Calculates the arccosine of the operand.
+    Acos,
+    /// Calculates the arctangent of the operand.
+    Atan,
     /// Calculates the exponential of the operand.
     Exp,
     /// Calculates the natural logarithm of the operand.
