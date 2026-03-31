@@ -29,18 +29,14 @@ impl Display for Inst {
                 src_offset,
                 dst,
             } => {
-                write!(
-                    f,
-                    "{} = load ty={} {} src_offset={}",
-                    dst, ty, src_ptr, src_offset
-                )
+                write!(f, "{} = load ty={} {}+{}", dst, ty, src_ptr, src_offset)
             }
             Inst::Store {
                 src,
                 dst_ptr,
                 dst_offset,
             } => {
-                write!(f, "store {} -> {} dst_offset={}", src, dst_ptr, dst_offset)
+                write!(f, "store {} -> {}+{}", src, dst_ptr, dst_offset)
             }
             Inst::Memcpy {
                 size,
@@ -51,7 +47,7 @@ impl Display for Inst {
             } => {
                 write!(
                     f,
-                    "memcpy size={} {} src_offset={} -> {} dst_offset={}",
+                    "memcpy size={} {}+{} -> {}+{}",
                     size, src_ptr, src_offset, dst_ptr, dst_offset
                 )
             }
