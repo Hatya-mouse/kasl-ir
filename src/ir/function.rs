@@ -15,12 +15,12 @@
 //
 
 use crate::ir::{Block, BlockData};
-use std::collections::HashMap;
+use std::{collections::BTreeMap, fmt::Display};
 
 #[derive(Default)]
 pub struct Function {
     /// The blocks in the function.
-    pub(crate) blocks: HashMap<Block, BlockData>,
+    pub(crate) blocks: BTreeMap<Block, BlockData>,
     /// The entry block of the function.
     pub(crate) entry_block: Option<Block>,
 }
@@ -34,5 +34,14 @@ impl Function {
     /// Returns a mutable reference to the block data.
     pub(crate) fn get_block_mut(&mut self, block: &Block) -> Option<&mut BlockData> {
         self.blocks.get_mut(block)
+    }
+}
+
+impl Display for Function {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for (block, data) in self.blocks.iter() {
+            write!(f, "{}{}", block, data)?;
+        }
+        Ok(())
     }
 }

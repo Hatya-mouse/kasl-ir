@@ -20,7 +20,7 @@ pub use block_data::BlockData;
 
 use std::fmt::Display;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Block(pub(crate) u32);
 
 impl Display for Block {
