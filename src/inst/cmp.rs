@@ -17,6 +17,7 @@
 use std::fmt::Display;
 
 /// Comparison operations for integers.
+#[derive(Clone)]
 pub enum IntCmp {
     /// Equal
     Eq,
@@ -58,6 +59,7 @@ impl Display for IntCmp {
 }
 
 /// Comparison operations for floating-point numbers.
+#[derive(Clone)]
 pub enum FloatCmp {
     /// Equal
     Eq,

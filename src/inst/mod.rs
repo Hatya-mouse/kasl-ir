@@ -26,6 +26,7 @@ pub use unary_op::{FloatUnaryOp, IntUnaryOp};
 use crate::{Block, Const, IRType, Offset, Value, Variable};
 
 /// Defines the instructions in the IR.
+#[derive(Clone)]
 pub enum Inst {
     /// Allocates memory on the stack with the given size and the alignment, and stores the pointer in the destination pointer.
     Alloc { size: u32, align: u32, dst: Value },

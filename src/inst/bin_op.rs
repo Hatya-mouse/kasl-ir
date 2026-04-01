@@ -17,6 +17,7 @@
 use std::fmt::Display;
 
 /// Defines binary operations for integer values.
+#[derive(Clone)]
 pub enum IntBinOp {
     /// Addition operation.
     Add,
@@ -76,6 +77,7 @@ impl Display for IntBinOp {
 }
 
 /// Defines binary operations for floating-point values.
+#[derive(Clone)]
 pub enum FloatBinOp {
     /// Addition operation.
     Add,

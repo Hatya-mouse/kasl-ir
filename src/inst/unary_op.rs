@@ -17,6 +17,7 @@
 use std::fmt::Display;
 
 /// Defines unary operations for integer values.
+#[derive(Clone)]
 pub enum IntUnaryOp {
     /// Absolute value of the operand.
     Abs,
@@ -40,6 +41,7 @@ impl Display for IntUnaryOp {
 }
 
 /// Defines unary operations for floating-point values.
+#[derive(Clone)]
 pub enum FloatUnaryOp {
     /// Absolute value of the operand.
     Abs,
