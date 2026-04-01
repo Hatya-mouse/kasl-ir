@@ -27,13 +27,18 @@ pub struct Function {
 
 impl Function {
     /// Returns a reference to the block data.
-    pub(crate) fn get_block(&self, block: &Block) -> Option<&BlockData> {
+    pub fn get_block(&self, block: &Block) -> Option<&BlockData> {
         self.blocks.get(block)
     }
 
     /// Returns a mutable reference to the block data.
-    pub(crate) fn get_block_mut(&mut self, block: &Block) -> Option<&mut BlockData> {
+    pub fn get_block_mut(&mut self, block: &Block) -> Option<&mut BlockData> {
         self.blocks.get_mut(block)
+    }
+
+    /// Returns the entry block of the function.
+    pub fn entry_block(&self) -> Option<Block> {
+        self.entry_block
     }
 }
 
