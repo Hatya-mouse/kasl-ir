@@ -69,8 +69,10 @@ pub enum FloatUnaryOp {
     Atan,
     /// Calculates the exponential of the operand.
     Exp,
-    /// Calculates the natural logarithm of the operand.
-    Log,
+    /// Calculates the base 10 logarithm of the operand.
+    Log10,
+    /// Calculates the base 2 logarithm of the operand.
+    Log2,
     /// Calculates the square root of the operand.
     Sqrt,
 }
@@ -91,7 +93,8 @@ impl Display for FloatUnaryOp {
             FloatUnaryOp::Acos => write!(f, "acos"),
             FloatUnaryOp::Atan => write!(f, "atan"),
             FloatUnaryOp::Exp => write!(f, "exp"),
-            FloatUnaryOp::Log => write!(f, "log"),
+            FloatUnaryOp::Log10 => write!(f, "log10"),
+            FloatUnaryOp::Log2 => write!(f, "log2"),
             FloatUnaryOp::Sqrt => write!(f, "sqrt"),
         }
     }

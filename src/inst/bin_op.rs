@@ -93,6 +93,8 @@ pub enum FloatBinOp {
     Pow,
     /// Returns the atan2 of the first operand and the second operand.
     Atan2,
+    /// Calculates the logarithm of the operand.
+    Log,
     /// Returns the minimum of the first operand and the second operand.
     Min,
     /// Returns the maximum of the first operand and the second operand.
@@ -109,6 +111,7 @@ impl Display for FloatBinOp {
             FloatBinOp::Rem => write!(f, "rem"),
             FloatBinOp::Pow => write!(f, "pow"),
             FloatBinOp::Atan2 => write!(f, "atan2"),
+            FloatBinOp::Log => write!(f, "log"),
             FloatBinOp::Min => write!(f, "min"),
             FloatBinOp::Max => write!(f, "max"),
         }
