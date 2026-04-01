@@ -23,7 +23,7 @@ pub use bin_op::{FloatBinOp, IntBinOp};
 pub use cmp::{FloatCmp, IntCmp};
 pub use unary_op::{FloatUnaryOp, IntUnaryOp};
 
-use crate::ir::{Block, Const, IRType, Offset, Value, Variable};
+use crate::{Block, Const, IRType, Offset, Value, Variable};
 
 /// Defines the instructions in the IR.
 pub enum Inst {

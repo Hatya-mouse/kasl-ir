@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-use crate::ir::{Block, BlockData};
+use crate::{Block, BlockData};
 use std::{collections::BTreeMap, fmt::Display};
 
 #[derive(Default)]

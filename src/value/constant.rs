@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-use crate::ir::IRType;
+use crate::IRType;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy, PartialEq)]

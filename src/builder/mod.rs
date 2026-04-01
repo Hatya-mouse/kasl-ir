@@ -18,7 +18,7 @@ mod inst_builder;
 
 pub use inst_builder::InstBuilder;
 
-use crate::ir::{Block, BlockData, IRType, Inst, Value, Variable, function::Function};
+use crate::{Block, BlockData, IRType, Inst, Value, Variable, function::Function};
 use std::collections::HashMap;
 
 /// A builder for constructing IR functions.

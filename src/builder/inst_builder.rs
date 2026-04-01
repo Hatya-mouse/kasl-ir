@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-use crate::ir::{
+use crate::{
     Block, Const, FloatBinOp, FloatUnaryOp, IRBuilder, IRType, Inst, IntBinOp, IntUnaryOp, Offset,
     Value, Variable,
     inst::{FloatCmp, IntCmp},

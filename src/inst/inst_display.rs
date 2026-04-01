@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-use crate::ir::{Inst, value::fmt_vals};
+use crate::{Inst, value::fmt_vals};
 use std::fmt::Display;
 
 impl Display for Inst {
