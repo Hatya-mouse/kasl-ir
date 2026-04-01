@@ -45,6 +45,7 @@ impl Display for IRType {
 }
 
 impl IRType {
+    /// Returns whether the type is integer.
     pub fn is_int(&self) -> bool {
         matches!(
             self,
@@ -52,6 +53,7 @@ impl IRType {
         )
     }
 
+    /// Returns whether the type is floating-point number.
     pub fn is_float(&self) -> bool {
         matches!(self, IRType::F32 | IRType::F64)
     }
