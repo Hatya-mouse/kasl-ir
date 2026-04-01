@@ -180,12 +180,4 @@ pub enum Inst {
         rhs: i64,
         dst: Value,
     },
-
-    /// Performs a floating-point comparison with an immediate value, and stores the result in the destination register.
-    FCmpImm {
-        cmp: FloatCmp,
-        lhs: Value,
-        rhs: f64,
-        dst: Value,
-    },
 }

@@ -132,9 +132,6 @@ impl Display for Inst {
             Inst::ICmpImm { cmp, lhs, rhs, dst } => {
                 write!(f, "{} = icmp_imm {} {}, {}", dst, cmp, lhs, rhs)
             }
-            Inst::FCmpImm { cmp, lhs, rhs, dst } => {
-                write!(f, "{} = fcmp_imm {} {}, {}", dst, cmp, lhs, rhs)
-            }
         }
     }
 }

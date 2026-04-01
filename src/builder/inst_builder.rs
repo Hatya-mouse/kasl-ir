@@ -100,9 +100,6 @@ pub trait InstBuilder {
 
     /// Performs an integer comparison with an immediate value, and returnrs the result in 8-bit integer value.
     fn icmp_imm(&mut self, cmp: IntCmp, lhs: Value, rhs: i64) -> Value;
-
-    /// Performs an floating-point comparison with an immediate value, and returnrs the result in 8-bit integer value.
-    fn fcmp_imm(&mut self, cmp: FloatCmp, lhs: Value, rhs: f64) -> Value;
 }
 
 impl InstBuilder for IRBuilder {
@@ -492,22 +489,6 @@ impl InstBuilder for IRBuilder {
         let dst = self.create_val(IRType::I8);
 
         self.push_inst(Inst::ICmpImm { cmp, lhs, rhs, dst });
-        dst
-    }
-
-    fn fcmp_imm(&mut self, cmp: FloatCmp, lhs: Value, rhs: f64) -> Value {
-        // Ensure that the type of the lhs value is float type
-        let lhs_ty = self.get_val_type(lhs);
-        assert!(
-            lhs_ty.is_float(),
-            "Type of the lhs is expected to be float but got {}",
-            lhs_ty
-        );
-
-        // Create a value to store the result
-        let dst = self.create_val(IRType::I8);
-
-        self.push_inst(Inst::FCmpImm { cmp, lhs, rhs, dst });
         dst
     }
 }
