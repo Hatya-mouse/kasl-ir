@@ -33,6 +33,11 @@ pub struct Function {
 }
 
 impl Function {
+    /// Returns all blocks in the function.
+    pub fn get_blocks(&self) -> Vec<Block> {
+        self.blocks.keys().copied().collect()
+    }
+
     /// Returns a reference to the block data.
     pub fn get_block(&self, block: &Block) -> Option<&BlockData> {
         self.blocks.get(block)
