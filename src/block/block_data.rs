@@ -23,6 +23,18 @@ pub struct BlockData {
     pub(crate) insts: Vec<Inst>,
 }
 
+impl BlockData {
+    /// Returns the arguments in the block.
+    pub fn get_args(&self) -> &[Value] {
+        &self.args
+    }
+
+    /// Returns the instructions in the block.
+    pub fn get_insts(&self) -> &[Inst] {
+        &self.insts
+    }
+}
+
 impl Display for BlockData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "({}):", fmt_vals(&self.args))?;
