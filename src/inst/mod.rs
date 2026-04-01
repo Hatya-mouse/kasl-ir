@@ -181,3 +181,17 @@ pub enum Inst {
         dst: Value,
     },
 }
+
+impl Inst {
+    pub(crate) fn successors(&self) -> Vec<Block> {
+        match self {
+            Inst::Jump { block, .. } => vec![*block],
+            Inst::Brif {
+                then_block,
+                else_block,
+                ..
+            } => vec![*then_block, *else_block],
+            _ => vec![],
+        }
+    }
+}

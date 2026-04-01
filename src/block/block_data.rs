@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-use crate::{Inst, Value, value::fmt_vals};
+use crate::{Block, Inst, Value, value::fmt_vals};
 use std::fmt::Display;
 
 #[derive(Default)]
@@ -32,6 +32,14 @@ impl BlockData {
     /// Returns the instructions in the block.
     pub fn get_insts(&self) -> &[Inst] {
         &self.insts
+    }
+
+    /// Returns all successors of the block.
+    pub fn get_successors(&self) -> Vec<Block> {
+        self.insts
+            .last()
+            .map(|last| last.successors())
+            .unwrap_or_default()
     }
 }
 

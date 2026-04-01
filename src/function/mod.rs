@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
+mod block_sort;
+
 use crate::{Block, BlockData, IRType, Value, Variable};
 use std::{
     collections::{BTreeMap, HashMap},
