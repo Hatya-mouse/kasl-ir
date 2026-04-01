@@ -19,14 +19,14 @@ use std::fmt::Display;
 
 #[derive(Default)]
 pub struct BlockData {
-    pub(crate) args: Vec<Value>,
+    pub(crate) params: Vec<Value>,
     pub(crate) insts: Vec<Inst>,
 }
 
 impl BlockData {
-    /// Returns the arguments in the block.
-    pub fn get_args(&self) -> &[Value] {
-        &self.args
+    /// Returns the parameters of the block.
+    pub fn get_params(&self) -> &[Value] {
+        &self.params
     }
 
     /// Returns the instructions in the block.
@@ -37,7 +37,7 @@ impl BlockData {
 
 impl Display for BlockData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "({}):", fmt_vals(&self.args))?;
+        writeln!(f, "({}):", fmt_vals(&self.params))?;
         for inst in &self.insts {
             writeln!(f, "    {}", inst)?;
         }
