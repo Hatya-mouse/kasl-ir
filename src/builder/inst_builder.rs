@@ -32,14 +32,7 @@ pub trait InstBuilder {
     fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset);
 
     /// Copies the value stored in the source pointer to the destination pointer.
-    fn memcpy(
-        &mut self,
-        size: u32,
-        src_ptr: Value,
-        src_offset: Offset,
-        dst_ptr: Value,
-        dst_offset: Offset,
-    );
+    fn memcpy(&mut self, size: u32, src_ptr: Value, dst_ptr: Value);
 
     /// Fills the destination pointer with the given value.
     fn memset(&mut self, size: u32, value: u8, dst_ptr: Value);
@@ -142,14 +135,7 @@ impl InstBuilder for IRBuilder {
         });
     }
 
-    fn memcpy(
-        &mut self,
-        size: u32,
-        src_ptr: Value,
-        src_offset: Offset,
-        dst_ptr: Value,
-        dst_offset: Offset,
-    ) {
+    fn memcpy(&mut self, size: u32, src_ptr: Value, dst_ptr: Value) {
         // Ensure that type of the both source and destination pointers is pointer type.
         assert!(
             self.is_val_type(dst_ptr, IRType::Ptr),
@@ -163,9 +149,7 @@ impl InstBuilder for IRBuilder {
         self.push_inst(Inst::Memcpy {
             size,
             src_ptr,
-            src_offset,
             dst_ptr,
-            dst_offset,
         });
     }
 

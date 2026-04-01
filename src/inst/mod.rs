@@ -50,9 +50,7 @@ pub enum Inst {
     Memcpy {
         size: u32,
         src_ptr: Value,
-        src_offset: Offset,
         dst_ptr: Value,
-        dst_offset: Offset,
     },
 
     /// Fills the memory with the given immediate u8 value.

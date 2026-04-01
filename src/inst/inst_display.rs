@@ -41,15 +41,9 @@ impl Display for Inst {
             Inst::Memcpy {
                 size,
                 src_ptr,
-                src_offset,
                 dst_ptr,
-                dst_offset,
             } => {
-                write!(
-                    f,
-                    "memcpy size={} {}+{} -> {}+{}",
-                    size, src_ptr, src_offset, dst_ptr, dst_offset
-                )
+                write!(f, "memcpy size={} {} -> {}", size, src_ptr, dst_ptr)
             }
             Inst::Memset {
                 size,
