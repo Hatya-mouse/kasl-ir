@@ -1,7 +1,15 @@
 [package]
 name = "kasl-ir"
-version = "0.2.0"
+version = "0.1.0"
 edition = "2024"
 license = "Apache-2.0"
+description = "An intermediate representation for the KASL language."
+repository = "https://github.com/hatya-mouse/kasl-ir"
+homepage = "https://hatya.dev"
+readme = "README.md"
+
+[lib]
+name = "kasl_ir"
+path = "src/lib.rs"
 
 [dependencies]
