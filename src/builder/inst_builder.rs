@@ -26,10 +26,10 @@ pub trait InstBuilder {
     fn alloc(&mut self, size: u32, align: u32) -> Value;
 
     /// Loads a value from the source pointer and returns the loaded value.
-    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value;
+    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset, alias: Option<u8>) -> Value;
 
     /// Stores a source value to the destination pointer.
-    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset);
+    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset, alias: Option<u8>);
 
     /// Copies the value stored in the source pointer to the destination pointer.
     fn memcpy(&mut self, size: u32, src_ptr: Value, dst_ptr: Value);
@@ -111,7 +111,7 @@ impl InstBuilder for IRBuilder {
         dst
     }
 
-    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset) -> Value {
+    fn load(&mut self, ty: IRType, src_ptr: Value, src_offset: Offset, alias: Option<u8>) -> Value {
         // Create a value to store the loaded value
         let dst = self.create_val(ty);
 
@@ -120,15 +120,17 @@ impl InstBuilder for IRBuilder {
             src_ptr,
             src_offset,
             dst,
+            alias,
         });
         dst
     }
 
-    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset) {
+    fn store(&mut self, src: Value, dst_ptr: Value, dst_offset: Offset, alias: Option<u8>) {
         self.push_inst(Inst::Store {
             src,
             dst_ptr,
             dst_offset,
+            alias,
         });
     }
 

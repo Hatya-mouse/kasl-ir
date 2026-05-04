@@ -28,15 +28,32 @@ impl Display for Inst {
                 src_ptr,
                 src_offset,
                 dst,
+                alias,
             } => {
-                write!(f, "{} = load ty={} {}+{}", dst, ty, src_ptr, src_offset)
+                write!(
+                    f,
+                    "{} = load ty={} alias={} {}+{}",
+                    dst,
+                    ty,
+                    alias.unwrap_or_default(),
+                    src_ptr,
+                    src_offset
+                )
             }
             Inst::Store {
                 src,
                 dst_ptr,
                 dst_offset,
+                alias,
             } => {
-                write!(f, "store {} -> {}+{}", src, dst_ptr, dst_offset)
+                write!(
+                    f,
+                    "store {} -> alias={} {}+{}",
+                    src,
+                    alias.unwrap_or_default(),
+                    dst_ptr,
+                    dst_offset
+                )
             }
             Inst::Memcpy {
                 size,
