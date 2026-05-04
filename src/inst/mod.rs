@@ -37,7 +37,6 @@ pub enum Inst {
         src_ptr: Value,
         src_offset: Offset,
         dst: Value,
-        alias: Option<u8>,
     },
 
     /// Stores a value to the destination pointer.
@@ -45,7 +44,6 @@ pub enum Inst {
         src: Value,
         dst_ptr: Value,
         dst_offset: Offset,
-        alias: Option<u8>,
     },
 
     /// Copies the value stored in the source pointer to the destination pointer.
