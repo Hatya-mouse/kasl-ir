@@ -17,7 +17,7 @@
 use std::fmt::Display;
 
 /// An offset used in memory access instructions.
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum Offset {
     /// Physical byte count.
     Immediate(u32),
