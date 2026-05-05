@@ -1,5 +1,5 @@
 //
-//  Copyright 2026 Shuntaro Kasatani
+//  Copyright 2025-2026 Shuntaro Kasatani
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 //  limitations under the License.
 //
 
-pub(super) mod const_collection;
-pub(super) mod ptr_add_folding;
-pub(super) mod store_load_elim;
+use crate::{Inst, Optimizer};
+
+impl Optimizer {
+    pub(super) fn fold_consts(&mut self, insts: Vec<Inst>) -> Vec<Inst> {}
+}

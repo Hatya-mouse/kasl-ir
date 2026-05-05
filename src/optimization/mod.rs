@@ -14,29 +14,36 @@
 //  limitations under the License.
 //
 
+mod const_folding;
 mod passes;
 mod value_replacement;
 
-use crate::{Function, Value};
+use crate::{Const, Function, Value};
 use std::collections::HashMap;
 
 #[derive(Default)]
 pub struct Optimizer {
     /// Value replacement map for tracking value replacements occured during optimization.
     value_replace_map: HashMap<Value, Value>,
+    /// Constant value map for tracking constant values of SSA values.
+    const_map: HashMap<Value, Const>,
 }
 
 impl Optimizer {
     pub fn optimize(&mut self, mut func: Function) -> Function {
         for block in func.blocks.values_mut() {
             let insts = std::mem::take(&mut block.insts);
-            let insts = passes::store_load_elim::run(insts, &mut self.value_replace_map);
-            let insts = passes::ptr_add_folding::run(insts);
+            let insts = self.elim_store_load(insts);
+            let insts = self.fold_ptr_add(insts);
+            self.collect_consts(&insts);
             block.insts = insts;
         }
 
         for block in func.blocks.values_mut() {
-            self.replace_values_in_block(block);
+            let insts = std::mem::take(&mut block.insts);
+            let insts = self.replace_values_in_block(insts);
+            let insts = self.fold_consts(insts);
+            block.insts = insts;
         }
         func
     }
