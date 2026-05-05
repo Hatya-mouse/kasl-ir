@@ -15,34 +15,42 @@
 //
 
 use crate::{Inst, Optimizer};
+use std::collections::HashMap;
 
 impl Optimizer {
     /// Eliminates a `Store` immediately followed by a `Load` from the same pointer and offset.
     pub(in crate::optimization) fn elim_store_load(&mut self, insts: Vec<Inst>) -> Vec<Inst> {
         let mut new_insts = Vec::with_capacity(insts.len());
-        let mut iter = insts.into_iter().peekable();
+        // A map to store the values being stored at specific pointers and offsets
+        let mut memory_map = HashMap::new();
 
-        while let Some(inst) = iter.next() {
-            if let Inst::Store {
-                src,
-                dst_ptr,
-                dst_offset,
-            } = &inst
-                && let Some(Inst::Load {
+        for inst in insts {
+            match &inst {
+                Inst::Store {
+                    src,
+                    dst_ptr,
+                    dst_offset,
+                    ..
+                } => {
+                    // Record the value being stored at the given pointer and offset
+                    memory_map.insert((*dst_ptr, dst_offset.clone()), *src);
+                    new_insts.push(inst);
+                }
+                Inst::Load {
                     src_ptr,
                     src_offset,
                     dst,
                     ..
-                }) = iter.peek()
-                && dst_ptr == src_ptr
-                && dst_offset == src_offset
-            {
-                // Replace the loaded value with the original value
-                self.value_replace_map.insert(*dst, *src);
-                iter.next();
+                } => {
+                    if let Some(original_value) = memory_map.get(&(*src_ptr, src_offset.clone())) {
+                        // If the load is from the same pointer and offset as a previous store, replace it with the stored value
+                        self.value_replace_map.insert(*dst, *original_value);
+                    } else {
+                        new_insts.push(inst);
+                    }
+                }
+                _ => new_insts.push(inst),
             }
-            // Add the store instruction even if the load is eliminated as it may have some side effects
-            new_insts.push(inst);
         }
 
         new_insts
