@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-mod block_optimization;
+mod passes;
 mod value_replacement;
 
 use crate::{Function, Value};
@@ -28,12 +28,13 @@ pub struct Optimizer {
 
 impl Optimizer {
     pub fn optimize(&mut self, mut func: Function) -> Function {
-        // First run the first optimization path
         for block in func.blocks.values_mut() {
-            self.optimize_block(block);
+            let insts = std::mem::take(&mut block.insts);
+            let insts = passes::store_load_elim::run(insts, &mut self.value_replace_map);
+            let insts = passes::ptr_add_folding::run(insts);
+            block.insts = insts;
         }
 
-        // Then replace the replaced values in the function
         for block in func.blocks.values_mut() {
             self.replace_values_in_block(block);
         }
