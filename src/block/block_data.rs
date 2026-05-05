@@ -17,7 +17,7 @@
 use crate::{Block, Inst, Value, value::fmt_vals};
 use std::fmt::Display;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct BlockData {
     pub(crate) params: Vec<Value>,
     pub(crate) insts: Vec<Inst>,

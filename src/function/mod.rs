@@ -22,7 +22,7 @@ use std::{
     fmt::Display,
 };
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Function {
     /// The blocks in the function.
     pub(crate) blocks: BTreeMap<Block, BlockData>,
